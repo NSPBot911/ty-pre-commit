@@ -8,7 +8,7 @@ permissions: {}
 
 jobs:
   build:
-    name: main
+    name: master
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,7 +30,7 @@ jobs:
       - name: check for unpushed commits
         id: check_unpushed
         run: |
-          UNPUSHED_COMMITS=$(git log origin/main..HEAD)
+          UNPUSHED_COMMITS=$(git log origin/master..HEAD)
           if [ -z "$UNPUSHED_COMMITS" ]; then
             echo "No unpushed commits found."
             echo "changes_exist=false" >> $GITHUB_ENV
@@ -42,8 +42,8 @@ jobs:
       - name: push changes if they exist
         if: env.changes_exist == 'true'
         run: |
-          git push origin HEAD:refs/heads/main
-          git push origin HEAD:refs/heads/main --tags
+          git push origin HEAD:refs/heads/master
+          git push origin HEAD:refs/heads/master --tags
 
       - name: create release on new tag if new changes exist
         if: env.changes_exist == 'true'
